@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>WebTest</display-name>
+    <display-name>Apache-Axis</display-name>
+    <servlet>
+        <display-name>Apache-Axis Servlet</display-name>
+        <servlet-name>AxisServlet</servlet-name>
+        <servlet-class>org.apache.axis.transport.http.AxisServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <display-name>Axis Admin Servlet</display-name>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>org.apache.axis.transport.http.AdminServlet</servlet-class>
+        <load-on-startup>100</load-on-startup>
+    </servlet>
+    <servlet>
+        <display-name>SOAPMonitorService</display-name>
+        <servlet-name>SOAPMonitorService</servlet-name>
+        <servlet-class>org.apache.axis.monitor.SOAPMonitorService</servlet-class>
+        <init-param>
+            <param-name>SOAPMonitorPort</param-name>
+            <param-value>5101</param-value>
+        </init-param>
+        <load-on-startup>100</load-on-startup>
+    </servlet>
+    <servlet>
+    	<servlet-name>FileTestServlet</servlet-name>
+    	<servlet-class>com.FileTest.FileTestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+    	<servlet-name>FileTestServlet</servlet-name>
+    	<url-pattern>/file/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AxisServlet</servlet-name>
+        <url-pattern>/servlet/AxisServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AxisServlet</servlet-name>
+        <url-pattern>*.jws</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AxisServlet</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SOAPMonitorService</servlet-name>
+        <url-pattern>/SOAPMonitor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/servlet/AdminServlet</url-pattern>
+    </servlet-mapping>
+    <mime-mapping>
+        <extension>wsdl</extension>
+        <mime-type>text/xml</mime-type>
+    </mime-mapping>
+    <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <context-param>
+  	<param-name>global</param-name>
+  	<param-value>My WebSite</param-value>
+  </context-param>
+  <servlet>
+	<servlet-name>main</servlet-name>
+	<servlet-class>servlet.Main</servlet-class>  
+	<init-param>
+		<param-name>title</param-name>
+		<param-value>Main Page</param-value>
+	</init-param>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>testpage</servlet-name>
+  	<jsp-file>/test.jsp</jsp-file>
+  	<init-param>
+  		<param-name>name</param-name>
+  		<param-value>홍길동</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>age</param-name>
+  		<param-value>10</param-value>
+  	</init-param>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>testpage2</servlet-name>
+  	<jsp-file>/test2.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>main</servlet-name>
+	<url-pattern>/main</url-pattern>  
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>testpage</servlet-name>
+  	<url-pattern>/test</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>testpage2</servlet-name>
+  	<url-pattern>/test2</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
