@@ -96,7 +96,16 @@ td{
 }
 
 #pageNumberSector>a {
+	font-weight: bolder;
 	text-decoration: none;
+	color: white;
+	border: black 1px solid;
+	background-color: cadetblue;
+}
+
+#pageNumberSector>a:hover {
+	background-color: black;
+	color: white;
 }
 
 #h2 {
@@ -126,16 +135,14 @@ td{
 	%>
 
 	<div id="page">
-		<a id="titleAnker" href="list.do"><h1>
-				<em>JSP_Notice Board</em>
-			</h1></a>
+		<a id="titleAnker" href="list.do"><h1><em>JSP_Notice Board</em></h1></a>
 		<div id="topSector">
 			<span id="count">전체<%=count%>건
 			</span>
 			<form id="search" action="list.do" method="get">
 				<select name="option">
 					<option name="title" value="title">제목</option>
-					<option name="writer" value="writer">작성자</option>
+					<option name="writer2" value="writer">작성자</option>
 				</select> <input type="text" name="searchText"> <input id="searchBtn"
 					type="submit" value="검색">
 			</form>
