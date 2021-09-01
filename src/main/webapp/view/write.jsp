@@ -32,7 +32,7 @@
 	<div id="page">
 		<h1>This is write Page</h1>
 		<hr />
-		<form action="insert" method="post" id="form" >
+		<form action="insert" method="post" id="form" enctype="multipart/form-data">
 			작성자 : <input type="text" name="inputWriter"><br />
 			제목 : <input type="text" name="inputTitle"><br />
 			내용 : <textarea id="inputContent" name="inputContents"></textarea><br /> 

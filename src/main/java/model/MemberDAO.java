@@ -144,12 +144,11 @@ public class MemberDAO {
 		}
 	}
 
-	public boolean setInsert(String writer, String title, String contents, int view, String inputDate) {
+	public boolean setInsert(String writer, String title, String contents, int view, String inputDate, String fileName) {
 		conn = null;
 		pstmt = null;
 		rs = null;
 		boolean result = false;
-
 		String query = "insert into user values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
@@ -161,7 +160,7 @@ public class MemberDAO {
 			pstmt.setString(4, contents);
 			pstmt.setString(5, inputDate);
 			pstmt.setInt(6, view);
-			pstmt.setString(7, null);
+			pstmt.setString(7, fileName);
 			pstmt.setInt(8, 0);     /*해당 글의 no를 listNum으로 넣기*/
 			pstmt.setInt(9, 0);
 			pstmt.executeUpdate();

@@ -1,7 +1,11 @@
 package control;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 import model.MemberDAO;
 import model.MemberDTO;
 import model.ReplyDTO;
+import com.oreilly.servlet.*;
+//import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 /**
  * Servlet implementation class MemberServlet
@@ -102,14 +110,29 @@ public class MemberServlet extends HttpServlet {
 			request.setCharacterEncoding("UTF-8");
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html; charset=utf-8");
-
-			String writer = request.getParameter("inputWriter");
+			
+/**************************파일 업로드*****************************/
+			
+			String savePath = "upload";
+			int uploadFileSizeLimit = 5 * 1024 * 1024;
+			String encType = "UTF-8";
+			
+			ServletContext context = getServletContext();
+			String uploadFilePath = context.getRealPath(savePath);
+			System.out.println("서버상의 실제 디렉토리");
+			System.out.println(uploadFilePath);
+			
+			MultipartRequest multi = new MultipartRequest(request, uploadFilePath, uploadFileSizeLimit, encType, new DefaultFileRenamePolicy());
+			String fileName = multi.getFilesystemName("file");
+			
+/*************************************************************************/
+			String writer = multi.getParameter("inputWriter");
 			if (writer.equals("")) {
 				writer = "Anonymous";
 			}
 
-			String title = request.getParameter("inputTitle");
-			String contents = request.getParameter("inputContents");
+			String title = multi.getParameter("inputTitle");
+			String contents = multi.getParameter("inputContents");
 			Date date = new Date();
 			SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
 			String strdate = simpleDate.format(date);
@@ -123,7 +146,7 @@ public class MemberServlet extends HttpServlet {
 			int view = 1;
 
 			boolean result = false;
-			result = dao.setInsert(writer, title, contents, view, inputDate);
+			result = dao.setInsert(writer, title, contents, view, inputDate, fileName);
 
 			if (result) {
 				out.println("<script>alert('등록 완료')</script>");
@@ -179,9 +202,70 @@ public class MemberServlet extends HttpServlet {
 			out.println("<script>location.href='list.do'</script>");
 		} else if (url.indexOf("download.do") != -1) {
 
-			System.out.print("다운로드.두 로 옴");
-			String filePath = request.getRealPath("/download");
-			File file = new File(String.valueOf(filePath) + "/" + request.getParameter("file"));
+			String file1 = request.getParameter("file");
+			
+			request.setCharacterEncoding("UTF-8");  
+		    // 파일 업로드된 경로
+		    String root = request.getSession().getServletContext().getRealPath("/");
+		    String savePath = root + "upload";
+		    // 서버에 실제 저장된 파일명
+		    String filename = file1;    
+		    // 실제 내보낼 파일명
+		    String orgfilename = file1;      
+		 
+		    InputStream in = null;
+		    OutputStream os = null;
+		    File file = null;
+		    boolean skip = false;
+		    String client = ""; 
+		 
+		    try{ 
+		        // 파일을 읽어 스트림에 담기
+		        try{
+		            file = new File(savePath, filename);
+		            in = new FileInputStream(file);
+		        }catch(FileNotFoundException fe){
+		            skip = true;
+		        }
+		         
+		        client = request.getHeader("User-Agent");
+		        // 파일 다운로드 헤더 지정
+		        response.reset() ;
+		        response.setContentType("application/octet-stream");
+		        response.setHeader("Content-Description", "JSP Generated Data"); 
+		 
+		        if(!skip){
+		            // IE
+		            if(client.indexOf("MSIE") != -1){
+		                response.setHeader ("Content-Disposition", "attachment; filename="+new String(orgfilename.getBytes("KSC5601"),"ISO8859_1"));
+		            }else{
+		                // 한글 파일명 처리
+		                orgfilename = new String(orgfilename.getBytes("utf-8"),"iso-8859-1");
+		 
+		                response.setHeader("Content-Disposition", "attachment; filename=\"" + orgfilename + "\"");
+		                response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
+		            } 
+		             
+		            response.setHeader ("Content-Length", ""+file.length() );
+		       
+		            os = response.getOutputStream();
+		            byte b[] = new byte[(int)file.length()];
+		            int leng = 0;
+		             
+		            while( (leng = in.read(b)) > 0 ){
+		                os.write(b,0,leng);
+		            }
+		 
+		        }else{
+		            out.println("<script>alert('파일을 찾을 수 없습니다');history.back();</script>");
+		        }
+		 
+		        in.close();
+		        os.close();
+		 
+		    }catch(Exception e){
+		      e.printStackTrace();
+		    }
 
 		} else if (url.indexOf("replyInsert.do") != -1) {
 
