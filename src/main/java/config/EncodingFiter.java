@@ -24,7 +24,7 @@ public class EncodingFiter implements Filter {
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		System.out.println("Servlet Auto Start Successfuly");
+		System.out.println("Servlet Auto Start Successfully");
 
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");

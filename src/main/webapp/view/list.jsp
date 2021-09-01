@@ -9,7 +9,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>JSP Notice Board</title>
 <style>
 #page {
 	background-color: antiquewhite;
