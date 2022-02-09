@@ -200,6 +200,7 @@ public class MemberServlet extends HttpServlet {
 			}
 
 			out.println("<script>location.href='list.do'</script>");
+			
 		} else if (url.indexOf("download.do") != -1) {
 
 			String file1 = request.getParameter("file");
@@ -255,7 +256,6 @@ public class MemberServlet extends HttpServlet {
 		            while( (leng = in.read(b)) > 0 ){
 		                os.write(b,0,leng);
 		            }
-		 
 		        }else{
 		            out.println("<script>alert('파일을 찾을 수 없습니다');history.back();</script>");
 		        }
