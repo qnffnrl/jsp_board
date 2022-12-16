@@ -6,9 +6,9 @@ import java.sql.DriverManager;
 
 public class Database
 {
-  private static String dbHost = "db.asin21.com";
-  private static String dbUser = "demo07";
-  private static String dbPass = "demo07!";
+  private static String dbHost = "127.0.0.1";
+  private static String dbUser = "root";
+  private static String dbPass = "1234";
   private static String dbName = "db_demo07";
   
   private static String dbDriver = "com.mysql.jdbc.Driver";
